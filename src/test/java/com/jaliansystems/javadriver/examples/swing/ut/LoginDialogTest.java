@@ -1,5 +1,6 @@
 package com.jaliansystems.javadriver.examples.swing.ut;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -80,21 +81,21 @@ public class LoginDialogTest {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(loginBtn));
 		loginBtn.click();
-		assertTrue(login.authenticate(userName, password));
+		assertTrue(login.isSucceeded());
 		assertNotNull(login.getSize());
 	}
 
 	@Test
 	public void testLoginCancel() {
 		String userName = user.getUserName();
-		String password = user.getWrongPassword();
+		String password = user.getPassword();
 		WebElement user = driver.findElement(By.cssSelector("text-field"));
 		user.sendKeys(userName);
 		WebElement pass = driver.findElement(By.cssSelector("password-field"));
 		pass.sendKeys(password);
 		WebElement cancelBtn = driver.findElement(By.cssSelector("button[text='Cancel']"));
 		cancelBtn.click();
-		assertFalse(login.authenticate(userName, password));
+		assertFalse(login.isSucceeded());
 	}
 
 	@Test
@@ -114,10 +115,11 @@ public class LoginDialogTest {
 		driver.switchTo().window("Login");
 		user = driver.findElement(By.cssSelector("text-field"));
 		pass = driver.findElement(By.cssSelector("password-field"));
-		assertNotNull(user.getText());
-		assertNotNull(pass.getText());
+		assertTrue(user.getText() != "");
+		assertTrue(pass.getText() != "");
 	}
-	@Test 
+
+	@Test
 	public void testTextFieldsAreEmpty() {
 		String userName = "";
 		String password = "";
@@ -129,9 +131,9 @@ public class LoginDialogTest {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(clearBtn));
 		clearBtn.click();
-		assertTrue(user.getText().isEmpty());
-		assertTrue(pass.getText().isEmpty());
-		
+		assertEquals("", user.getText());
+		assertEquals("", pass.getText());
+
 	}
 
 	@Test
