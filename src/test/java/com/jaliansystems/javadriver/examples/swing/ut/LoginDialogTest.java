@@ -117,6 +117,7 @@ public class LoginDialogTest {
 		pass = driver.findElement(By.cssSelector("password-field"));
 		assertTrue(user.getText() != "");
 		assertTrue(pass.getText() != "");
+		assertFalse(login.isSucceeded());
 	}
 
 	@Test
